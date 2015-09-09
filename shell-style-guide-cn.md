@@ -1,6 +1,6 @@
 # Shell 编码规范
 
-> 作者：Matthew Wang <mattwyl at gmail.com><br>
+> 作者：Matthew Wang &lt;mattwyl&#64;gmai<!--nospam-->l.com&gt;<br>
 > 链接：[github.com/ymattw/shell-style-giude](https://github.com/ymattw/shell-style-giude/blob/master/shell-style-guide-cn.md)
 
 本文为作者结合自身多年 shell 编码经验并参考 [Google shell style
