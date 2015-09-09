@@ -9,7 +9,7 @@
 
 ### 文件
 
-- 文件名：全小写，扩展名为 .sh，文件名要有明确含义
+- 文件名：全小写，扩展名为 `.sh`，文件名要有明确含义
   - 主文件的文件名必要时采用连接符分隔，如 `build-foobar.sh`
   - 函数库文件名以 lib 开始，如 `liblog.sh`
 - 文件编码：utf-8，以 LF (\n) 分隔行，CR (\r) 将引起错误
@@ -32,7 +32,7 @@ COMMAND_ARGS="$*"
 
 ### 函数名
 
-- 全部小写，单词间以下划线连接
+全部小写，单词间以下划线连接
 
 ### 局部变量
 
@@ -97,6 +97,9 @@ function tcp_port_test {
     # XXX: on older system '-w' is not for connection timeout
     ...
 ```
+
+提示：`vimrc` 中设置 `set formatoptions=tcroqnmMB` 后，编辑多行注释时可在
+Normal 模式下按 `V` 进入行模式，`j` 和 `k` 选择多行，然后 `gq` 即可按当前行宽重排注释。
 
 ### 行宽
 
@@ -268,6 +271,8 @@ if [[ -n "$FOO" ]]; then
     ..
 fi
 ```
+
+不用 `[[ "x$FOO" == "x" ]]` 这种丑陋的写法，改用 `[[ -z "$FOO" ]]`。
 
 ### 算术运算
 
