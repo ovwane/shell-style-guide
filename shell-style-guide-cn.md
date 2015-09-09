@@ -1,6 +1,6 @@
 # Shell 编码规范
 
-> 作者：Matthew Wang &lt;mattwyl&#64;gmai<!--nospam-->l.com&gt;<br>
+> 作者：Matthew Wang &lt;matt&#x77;yl&#x40;gmai&#x6c;.c&#x6f;m&gt;<br>
 > 链接：[github.com/ymattw/shell-style-giude](https://github.com/ymattw/shell-style-giude/blob/master/shell-style-guide-cn.md)
 
 本文为作者结合自身多年 shell 编码经验并参考 Google Shell Style Guide <sup>[1]</sup> 完成，**文中 shell 特指 bash**。转载随意（CC0 1.0 通用版权）。
@@ -63,7 +63,7 @@ function status_check {
 
 ### 注释
 
-注释用 `#` 紧跟一个空格。用英文。
+注释用 `#` 紧跟一个空格开始，用英文。
 
 紧接 shebang 后之后要撰写头部注释：
 
@@ -75,7 +75,7 @@ function status_check {
 
 - 代码中的注释，多行的在最后一行注释后额外加入一个空注释行
 - 行尾注释，`#` 符号之前至少留出两个空格
-- 必要时使用特殊注释：`TODO`，`FIXME`，`XXX`，多数编辑器能高亮显示它们
+- 必要时使用特殊标记：`TODO`，`FIXME`，`XXX`，多数编辑器能高亮显示它们
 
 例如：
 
@@ -109,7 +109,7 @@ Normal 模式下按 `V` 进入行模式，`j` 和 `k` 选择多行，然后 `gq`
 echo "Here we output a very very long message need to break into multiple" \
      "lines with backslashes"
 
-tar -Pzcf $backup_dir/os-backup/$timestamp/host-config.tar.gz \
+tar -Pzcf $backup_dir/host-config.tar.gz \
     /etc/ssh/ssh_host* \
     /etc/ssh/sshd_config \
     /etc/hosts \
@@ -127,17 +127,13 @@ mat CharAtCol80 /\%80v/
 
 ### 缩进
 
-用四个空格缩进。以下示例 `vimrc` 配置设定 tab 为 soft tab 四个空格，为 html,
-ruby 和 yaml 文件设为两个空格，保持 Makefile 为 hard tab。更多请见 [参考 vimrc
-配置](https://github.com/ymattw/profiles/blob/1.0/vimrc#L116-L126)。
+用四个空格缩进。以下示例 `vimrc` 配置设定 tab 为 soft tab 四个空格，为 Makefile
+保持 hard tab。更多请见 [参考 vimrc配置
+](https://github.com/ymattw/profiles/blob/1.0/vimrc#L116-L126)。
 
 ```vim
 set et sts=4 sw=4 ts=8
-
 au! BufEnter *[Mm]akefile*,[Mm]ake.*,*.mak,*.make setl filetype=make
-au! BufEnter Gemfile,Berksfile,Thorfile,Vagrantfile setl filetype=ruby
-
-au! FileType html,ruby,eruby,yaml setl et sts=2 sw=2
 au! FileType make setl noet sw=8
 ```
 
@@ -156,7 +152,7 @@ nmap <Space> :set list!<CR>
 
 ### 全局选项
 
-- 始终使用 `set -o nounset` 确保变量已经定义且非空
+- 始终使用 `set -o nounset` 确保变量已经定义
 - 在主文件且只在主文件中使用 `set -o errexit` 第一时间捕获错误
 
 注：参考后面的“陷阱”一节。
@@ -272,7 +268,7 @@ if [[ -n "$FOO" ]]; then
 fi
 ```
 
-不用 `[[ "x$FOO" == "x" ]]` 这种丑陋的写法，改用 `[[ -z "$FOO" ]]`。
+不用 `[[ "x$FOO" == "x" ]]` 这种传承自古老 Unix 系统的写法，改用 `[[ -z "$FOO" ]]`。
 
 ### 算术运算
 
@@ -315,7 +311,7 @@ EOT)
 ### 环境
 
 注意很多系统下 `/usr/sbin` 和 `/sbin` 不在默认路径中，如果程序里引用到它们下的命令，将它们加进
-`PATH`。安全性敏感的脚本，应显示设置 PATH，如：
+`PATH`。安全性敏感的脚本，应显式设置 PATH，如：
 
 ```bash
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
@@ -369,7 +365,7 @@ trap "rm -rf $TMPDIR $TMPFILE" EXIT
 - 采用全局选项 `set -o nounset` 确保变量展开时已定义
 - 使用 `${VAR:?}` 或 `${VAR:?"Error mssage"}` 确保关键变量已经定义且非空
 
-考虑下面的例子，如果变量名不慎写错，运行时将会发生惨剧 :-)。
+考虑下面的例子，如果变量名不慎写错，运行时前一种就会及时报错，后一种则将会发生惨剧 :-)。
 
 ```bash
 # Good
