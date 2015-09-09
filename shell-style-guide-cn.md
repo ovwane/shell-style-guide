@@ -3,8 +3,7 @@
 > 作者：Matthew Wang &lt;mattwyl&#64;gmai<!--nospam-->l.com&gt;<br>
 > 链接：[github.com/ymattw/shell-style-giude](https://github.com/ymattw/shell-style-giude/blob/master/shell-style-guide-cn.md)
 
-本文为作者结合自身多年 shell 编码经验并参考 [Google shell style
-guide](https://google-styleguide.googlecode.com/svn/trunk/shell.xml) 完成，**文中 shell 特指 bash**。转载随意（CC0 1.0 通用版权）。
+本文为作者结合自身多年 shell 编码经验并参考 Google Shell Style Guide <sup>[1]</sup> 完成，**文中 shell 特指 bash**。转载随意（CC0 1.0 通用版权）。
 
 ## 命名规范
 
@@ -434,3 +433,7 @@ FILE_SUFFIX=$(echo "$PATHNAME | sed -e 's/.*\.//')
 local var=$(some command); echo $?
 
 set -o errexit 与 &&
+
+## 参考
+
+[1] [Google Shell Style Guide](https://google-styleguide.googlecode.com/svn/trunk/shell.xml)
