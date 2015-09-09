@@ -4,8 +4,7 @@
 > 原始链接：[github.com/ymattw/shell-style-giude](https://github.com/ymattw/shell-style-giude/blob/master/shell-style-guide-cn.md)
 
 本文为作者结合自身多年 shell 编码经验并参考 [Google shell style
-guide](https://google-styleguide.googlecode.com/svn/trunk/shell.xml) 完成，**文
-中 shell 特指 bash**。转载随意（CC0 1.0 通用版权）。
+guide](https://google-styleguide.googlecode.com/svn/trunk/shell.xml) 完成，**文中 shell 特指 bash**。转载随意（CC0 1.0 通用版权）。
 
 ## 命名规范
 
@@ -52,6 +51,7 @@ function status_check {
     local prog=${1:?}
     local -i counter
     local -a args
+
     ...
 }
 ```
@@ -115,10 +115,18 @@ tar -Pzcf $backup_dir/os-backup/$timestamp/host-config.tar.gz \
     /etc/postfix/relay_passwd
 ```
 
+以下 `vimrc` 配置可将第 80 列的字符标成红色。更多请见 [参考 vimrc 配置](
+https://github.com/ymattw/profiles/blob/1.0/vimrc#L143-L144)。
+
+```vim
+hi! link CharAtCol80 WarningMsg
+mat CharAtCol80 /\%80v/
+```
+
 ### 缩进
 
 用四个空格缩进。以下示例 `vimrc` 配置设定 tab 为 soft tab 四个空格，为 html,
-ruby 和 yaml 文件设为两个空格，保持Makefile 为 hard tab。更多请见 [参考 vimrc
+ruby 和 yaml 文件设为两个空格，保持 Makefile 为 hard tab。更多请见 [参考 vimrc
 配置](https://github.com/ymattw/profiles/blob/1.0/vimrc#L116-L126)。
 
 ```vim
@@ -348,9 +356,9 @@ trap "rm -rf $TMPDIR $TMPFILE" EXIT
 ### 检查输入
 
 - 采用全局选项 `set -o nounset` 确保变量展开时已定义
-- 使用 `${VAR:?}` 或 `${VAR:?"Error mssage"}` 确保变量已经定义且非空
+- 使用 `${VAR:?}` 或 `${VAR:?"Error mssage"}` 确保关键变量已经定义且非空
 
-考虑下面的例子，如果变量名不慎写错，将会发生惨剧 :-)。
+考虑下面的例子，如果变量名不慎写错，运行时将会发生惨剧 :-)。
 
 ```bash
 # Good
@@ -371,7 +379,7 @@ function status_check {
 }
 ```
 
-### main 函数
+### Main 函数
 
 尽量用函数组织代码中的独立逻辑，函数外的代码留给全局变量定义，其他代码变多时放进 `main` 函数，然后按如下方式调用：
 
