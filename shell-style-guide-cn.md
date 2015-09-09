@@ -1,7 +1,7 @@
 # Shell 编码规范
 
 > 作者：Matthew Wang <mattwyl at gmail.com><br>
-> 原始链接：[github.com/ymattw/shell-style-giude](https://github.com/ymattw/shell-style-giude/blob/master/shell-style-guide-cn.md)
+> 链接：[github.com/ymattw/shell-style-giude](https://github.com/ymattw/shell-style-giude/blob/master/shell-style-guide-cn.md)
 
 本文为作者结合自身多年 shell 编码经验并参考 [Google shell style
 guide](https://google-styleguide.googlecode.com/svn/trunk/shell.xml) 完成，**文中 shell 特指 bash**。转载随意（CC0 1.0 通用版权）。
@@ -310,8 +310,15 @@ EOT)
 
 ### 环境
 
-- PATH
-- JAVA_HOME
+注意很多系统下 `/usr/sbin` 和 `/sbin` 不在默认路径中，如果程序里引用到它们下的命令，将它们加进
+`PATH`。安全性敏感的脚本，应显示设置 PATH，如：
+
+```bash
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+```
+
+小心处理一些常见的环境变量，例如启动一个 Java 应用时，如果依赖系统默认安装的
+Java 环境，应 `unset JAVA_HOME` 等避免受用户环境干扰。
 
 ### 错误输出
 
@@ -391,7 +398,19 @@ main "$@"
 
 ### exit vs return
 
-### builtin vs 外部命令
+### Builtin vs 外部命令
+
+优先使用 builtin (内置) 命令，如
+
+```bash
+# Good
+SUM=$(( x + y ))
+FILE_SUFFIX=${PATHNAME%%*.}
+
+# Bad
+SUM=$(expr $x + $y)
+FILE_SUFFIX=$(echo "$PATHNAME | sed -e 's/.*\.//')
+```
 
 ## 陷阱
 
