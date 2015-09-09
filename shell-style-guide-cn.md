@@ -49,7 +49,7 @@ COMMAND_ARGS="$*"
 
 ```bash
 function status_check {
-    local prog
+    local prog=${1:?}
     local -i counter
     local -a args
     ...
@@ -64,7 +64,9 @@ function status_check {
 
 ### 注释
 
-用英文。紧接 shebang 后之后要撰写头部注释：
+注释用 `#` 紧跟一个空格。用英文。
+
+紧接 shebang 后之后要撰写头部注释：
 
 - 解释文件的用途
 - 简要解释如何使用（详细的写 usage 函数提供）
@@ -140,7 +142,14 @@ set list listchars=tab:▸\ ,trail:▌
 nmap <Space> :set list!<CR>
 ```
 
-注：Windows 系统下对特殊字符显示支持不完善，可考虑更换上面的两个字符。
+注：Windows 系统下对 utf-8 字符显示支持不完善，可考虑更换上面的两个特殊字符为 `>` 和 `_`。
+
+### 全局选项
+
+- 始终使用 `set -o nounset` 确保变量已经定义且非空
+- 在主文件且只在主文件中使用 `set -o errexit` 第一时间捕获错误
+
+注：参考后面的“陷阱”一节。
 
 ### 函数定义
 
@@ -227,7 +236,7 @@ readonly CONFIG="$TOP_DIR/myapp.conf"
 
 ```bash
 function start {
-    local banner='Welcome to the "Awsome Portal"'
+    local banner='Welcome to the "Awesome Portal"'
     local pattern='loaded$'
 ```
 
@@ -298,25 +307,77 @@ EOT)
 
 ### 错误输出
 
-stderr
+错误信息输出到 `&2` (stderr)，仅当条件测试时才考虑重定向至 `/dev/null`。
+
+```bash
+if ! which nc > /dev/null 2>&1; then
+    echo "ERROR: nc is not installed, aborting" >&2
+    exit 1
+fi
+```
 
 ### 当前目录
 
+不要改变当前目录，也不采用 `pushd` 和 `popd`，因为会给维护者增加负担。
+
+如果需要得到当前脚本的绝对路径，采用下面方法：
+
+```bash
+SELF_DIR=$(cd $(dirname $0) && pwd)
+```
+
+尽量使用一些程序自己的特性改变目录，如 `tar -C`，`patch -d`。如果需要临时改变当前目录，采用子 shell：
+
+```bash
+(
+    cd /tmp/foo
+    ...
+)
+```
+
 ### 临时文件
 
-mktemp
+使用 `mktemp` 创建临时文件和目录，采用 `trap EXIT` 做清理。
+
+```bash
+TMPDIR=$(mktemp -d /tmp/foo.XXXXXXXXXX)
+TMPFILE=$(mktemp /tmp/bar.XXXXXXXXXX)
+trap "rm -rf $TMPDIR $TMPFILE" EXIT
+```
 
 ### 检查输入
 
-rm -rf $LOG_DIR/　的例子
+- 采用全局选项 `set -o nounset` 确保变量展开时已定义
+- 使用 `${VAR:?}` 或 `${VAR:?"Error mssage"}` 确保变量已经定义且非空
+
+考虑下面的例子，如果变量名不慎写错，将会发生惨剧 :-)。
+
+```bash
+# Good
+rm -rf ${LOG_DIR:?}/*
+
+# Bad
+rm -rf $LOG_DIR/*
+```
+
+检查函数输入参数的例子：
+
+```bash
+function status_check {
+    local prog_name=${1:?}
+    local timeout=${2:?}    # In second
+
+    ...
+}
+```
 
 ### main 函数
 
-长文件 main "$@"
+尽量用函数组织代码中的独立逻辑，函数外的代码留给全局变量定义，其他代码变多时放进 `main` 函数，然后按如下方式调用：
 
-### errexit 选项
-
-set -o errexit
+```bash
+main "$@"
+```
 
 ### && ||
 
