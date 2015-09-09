@@ -430,9 +430,48 @@ FILE_SUFFIX=$(echo "$PATHNAME | sed -e 's/.*\.//')
 
 ## 陷阱
 
-local var=$(some command); echo $?
+### 选项 errexit
 
-set -o errexit 与 &&
+启用了 `set -o errexit` 时小心每条命令的返回值。例如下面语句本意是先检查进程，存活时才执行 killall，但进程不存在时由于启用
+`errexit` 选项的缘故程序将直接退出！
+
+```bash
+prog_check $PROG_NAME && killall $PROG_NAME
+...
+```
+
+可改写为断言（assertion）形式，或用 `if..fi` 语句：
+
+```bash
+! prog_check $PROG_NAME || killall $PROG_NAME
+
+# Or:
+if prog_check $PROG_NAME; then
+    killall $PROG_NAME
+fi
+```
+对于不会输出错误信息的命令，还要显示输出，以便容易知道程序终止在何处。
+
+```bash
+nc -w 5 $host $port || {
+    echo "$host:$port seems unreachable" >&2
+    exit 1
+}
+```
+
+### Subshell 给 local 变量赋值
+
+注意 `local output=$(foo_command)` 赋值始终会成功（返回 0），若依赖命令返回值，要分开两行写：
+
+```bash
+    local var
+
+    output=$(foo_command)  # errexit will capture the return value
+```
+
+### Shift
+
+小心 `shift 2` 在参数个数小于 2 时的行为将是一个也不移，在某些系统上并不返回错误，应改成 `shift; shift`。
 
 ## 参考
 
