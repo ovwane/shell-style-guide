@@ -394,7 +394,22 @@ function status_check {
 main "$@"
 ```
 
-### && ||
+### '&&' 和 '||'
+
+仅将 `&&` 和 `||` 用于连接多个测试条件。`||` 适用于“断言（assertion）”时方可接命令语句。一些例子如下：
+
+```bash
+# Good: assertion
+[[ -n "$1" ]] || { usage; exit 1; }
+
+# Good
+if [[ -r $conf ]] && grep -q "foobar" $conf; then
+    load_config $conf
+fi
+
+# Bad: may be suffered by "set -o errexit" when the config file does not exist
+[[ -r $config ]] && grep -q "foobar" $conf && load_config $conf
+```
 
 ### exit vs return
 
