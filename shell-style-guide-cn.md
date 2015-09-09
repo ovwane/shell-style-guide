@@ -411,7 +411,9 @@ fi
 [[ -r $config ]] && grep -q "foobar" $conf && load_config $conf
 ```
 
-### exit vs return
+### Exit vs return
+
+函数内部只使用 `return`，返回 `0` 代表成功，返回 `1` 代表失败。`exit` 只用于主程序。
 
 ### Builtin vs 外部命令
 
