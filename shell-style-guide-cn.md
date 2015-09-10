@@ -118,30 +118,30 @@ tar -Pzcf $backup_dir/host-config.tar.gz \
 ```
 
 以下 `vimrc` 配置可将第 80 列的字符标成红色。更多请见 [参考 vimrc 配置](
-https://github.com/ymattw/profiles/blob/1.0/vimrc#L143-L144)。
+https://github.com/ymattw/profiles/blob/1.1/vimrc#L134-L137)。
 
 ```vim
-hi! link CharAtCol80 WarningMsg
-mat CharAtCol80 /\%80v/
+highlight! link CharAtCol80 WarningMsg
+match CharAtCol80 /\%80v/
 ```
 
 ### 缩进
 
 用四个空格缩进。以下示例 `vimrc` 配置设定 tab 为 soft tab 四个空格，为 Makefile
 保持 hard tab。更多请见 [参考 vimrc配置
-](https://github.com/ymattw/profiles/blob/1.0/vimrc#L116-L126)。
+](https://github.com/ymattw/profiles/blob/1.1/vimrc#L121-L129)。
 
 ```vim
-set et sts=4 sw=4 ts=8
-au! BufEnter *[Mm]akefile*,[Mm]ake.*,*.mak,*.make setl filetype=make
-au! FileType make setl noet sw=8
+set expandtab softtabstop=4 shiftwidth=4 tabstop=8
+autocmd! BufEnter *[Mm]akefile*,[Mm]ake.*,*.mak,*.make setlocal filetype=make
+autocmd! FileType make setlocal noexpandtab shiftwidth=8
 ```
 
 ### 空行和空格
 
 使用单行空行分隔代码中的小段逻辑增加可读性。不留多余空格。使用下面 vim
 配置可以高亮显示去多余空白，且 Normal 模式下按空格开关显示。更多请见 [参考
-vimrc 配置](https://github.com/ymattw/profiles/blob/1.0/vimrc#L110-L114)。
+vimrc 配置](https://github.com/ymattw/profiles/blob/1.1/vimrc#L113-L117)。
 
 ```vim
 set list listchars=tab:▸\ ,trail:▌
