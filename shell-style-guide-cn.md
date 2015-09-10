@@ -128,7 +128,7 @@ match CharAtCol80 /\%80v/
 ### 缩进
 
 用四个空格缩进。以下示例 `vimrc` 配置设定 tab 为 soft tab 四个空格，为 Makefile
-保持 hard tab。更多请见 [参考 vimrc配置
+保持 hard tab。更多请见 [参考 vimrc 配置
 ](https://github.com/ymattw/profiles/blob/1.1/vimrc#L121-L129)。
 
 ```vim
@@ -364,6 +364,7 @@ trap "rm -rf $TMP_DIR $TMP_FILE" EXIT
 
 - 采用全局选项 `set -o nounset` 确保变量展开时已定义
 - 使用 `${VAR:?}` 或 `${VAR:?"Error mssage"}` 确保关键变量已经定义且非空
+- 用 `${VAR:-"default value"}` 设置变量默认值
 
 考虑下面的例子，如果变量名不慎写错，运行时前一种就会及时报错，后一种则将会发生惨剧 :-)。
 
@@ -380,7 +381,7 @@ rm -rf $TEMPORARY_DATA_DIR/*
 ```bash
 function status_check {
     local prog_name=${1:?}
-    local timeout=${2:?}    # In second
+    local timeout=${2:-5}    # In second
 
     ...
 }
@@ -400,7 +401,7 @@ main "$@"
 
 ```bash
 # Good: assertion
-[[ -n "$1" ]] || { usage; exit 1; }
+(( $# > 1 )) || { usage; exit 1; }
 
 # Good
 if [[ -r $conf ]] && grep -q "foobar" $conf; then
