@@ -36,7 +36,7 @@ COMMAND_ARGS="$*"
 
 ### 局部变量
 
-定义在函数内部的变量为局部变量。
+定义在函数内部的变量为“局部变量”，但如果不加 `local` 修饰将**全局可见**。
 
 - 全部小写，单词间以下划线连接
 - 在函数开始处统一以 `local` 先声明后使用
@@ -355,9 +355,9 @@ SELF_DIR=$(cd $(dirname $0) && pwd)
 使用 `mktemp` 创建临时文件和目录，采用 `trap EXIT` 做清理。
 
 ```bash
-TMPDIR=$(mktemp -d /tmp/foo.XXXXXXXXXX)
-TMPFILE=$(mktemp /tmp/bar.XXXXXXXXXX)
-trap "rm -rf $TMPDIR $TMPFILE" EXIT
+TMP_DIR=$(mktemp -d /tmp/foo.XXXXXXXXXX)
+TMP_FILE=$(mktemp /tmp/bar.XXXXXXXXXX)
+trap "rm -rf $TMP_DIR $TMP_FILE" EXIT
 ```
 
 ### 检查输入
@@ -369,10 +369,10 @@ trap "rm -rf $TMPDIR $TMPFILE" EXIT
 
 ```bash
 # Good
-rm -rf ${LOG_DIR:?}/*
+rm -rf ${TEMPORARY_DATA_DIR:?}/*
 
 # Bad
-rm -rf $LOG_DIR/*
+rm -rf $TEMPORARY_DATA_DIR/*
 ```
 
 检查函数输入参数的例子：
@@ -451,7 +451,7 @@ if prog_check $PROG_NAME; then
     killall $PROG_NAME
 fi
 ```
-对于不会输出错误信息的命令，还要显示输出，以便容易知道程序终止在何处。
+对于不会输出错误信息的命令，还要显式输出，以便容易知道程序终止在何处。
 
 ```bash
 nc -w 5 $host $port || {
