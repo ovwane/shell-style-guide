@@ -46,7 +46,8 @@ COMMAND_ARGS="$*"
 例如：
 
 ```bash
-function status_check {
+function status_check
+{
     local prog=${1:?}
     local -i counter
     local -a args
@@ -87,7 +88,8 @@ PID_FILE="/var/run/foo_daemon.pid"
 # a connection without sending any data. Returns 0 on
 # success, 1 otherwise. TODO: implement an udp version
 #
-function tcp_port_test {
+function tcp_port_test
+{
     local timeout=5  # in second
     ...
 
@@ -159,10 +161,14 @@ nmap <Space> :set list!<CR>
 
 ### 函数定义
 
-采用 `function func_name` 并将开括弧放在同一行，不用多余的 `()` 记号。这样至少有一个好处，从文件中查找所有函数定义只需要 `grep ^function` 即可。
+采用 `function func_name` 并将开括弧放在下一行，不用多余的 `()` 记号。这样至少有两个好处：
+
+- 从文件中查找所有函数定义只需要 `grep ^function` 即可
+- Vim 中设置 `smartindent` 之后下一行会正确自动缩进
 
 ```bash
-function func_name {
+function func_name
+{
     ...
 }
 ```
@@ -241,7 +247,8 @@ readonly CONFIG="$TOP_DIR/myapp.conf"
 使用单引号场合示例：
 
 ```bash
-function start {
+function start
+{
     local banner='Welcome to the "Awesome Portal"'
     local pattern='loaded$'
 ```
@@ -287,7 +294,8 @@ fi
 需要写大段文本或模板时采用 here document。无需变量展开时结束符使用双引号。
 
 ```bash
-function usage {
+function usage
+{
     cat << EOT
 
 Usage: $0 [options]
@@ -379,7 +387,8 @@ rm -rf $TEMPORARY_DATA_DIR/*
 检查函数输入参数的例子：
 
 ```bash
-function status_check {
+function status_check
+{
     local prog_name=${1:?}
     local timeout=${2:-5}    # In second
 
