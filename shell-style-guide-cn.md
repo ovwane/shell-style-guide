@@ -1,7 +1,7 @@
 # Shell 编码规范
 
 > 作者：Matthew Wang &lt;matt&#x77;yl&#x40;gmai&#x6c;.c&#x6f;m&gt;<br>
-> 链接：[github.com/ymattw/shell-style-giude](https://github.com/ymattw/shell-style-giude/blob/master/shell-style-guide-cn.md)
+> 链接：[github.com/ymattw/shell-style-guide](https://github.com/ymattw/shell-style-guide/blob/master/shell-style-guide-cn.md)
 
 本文为作者结合自身多年 shell 编码经验并参考 Google Shell Style Guide <sup>[1]</sup> 完成，**文中 shell 特指 bash**。转载随意（CC0 1.0 通用版权）。
 
@@ -11,7 +11,7 @@
 
 - 文件名：全小写，扩展名为 `.sh`，文件名要有明确含义
   - 主文件的文件名必要时采用连接符分隔，如 `build-foobar.sh`
-  - 函数库文件名以 lib 开始，如 `liblog.sh`
+  - 函数库文件名以 `lib` 开始，如 `liblog.sh`
 - 文件编码：utf-8，以 LF (\n) 分隔行，CR (\r) 将引起错误
 - 权限位：主文件加执行权限（chmod +x），但函数库文件不加
 
