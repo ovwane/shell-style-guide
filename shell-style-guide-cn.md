@@ -32,7 +32,7 @@ COMMAND_ARGS="$*"
 
 ### 函数名
 
-全部小写，单词间以下划线连接
+全部小写，单词间以下划线连接。
 
 ### 局部变量
 
@@ -175,7 +175,7 @@ function func_name
 
 ### 分支
 
-类似函数定义的开括弧，将 `then` 放在和 `if` 同一行。
+将 `then` 放在和 `if` 同一行。
 
 ```bash
 if condition 1; then
@@ -189,7 +189,7 @@ fi
 
 ### 循环
 
-类似函数定义的开括弧，将 `do` 放在和 `for` 和 `while` 同一行。
+将 `do` 放在和 `for` 和 `while` 同一行。
 
 ```bash
 for x in "foo" "bar" "quz"; do
