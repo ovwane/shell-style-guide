@@ -461,6 +461,13 @@ if prog_check $PROG_NAME; then
     killall $PROG_NAME
 fi
 ```
+
+特别注意：`! command` 指令在 command 返回 0 时并不会终止当前脚本执行，即使表达式返回非零！应当显示写成：
+
+```bash
+! commmand || return 1
+```
+
 对于不会输出错误信息的命令，还要显式输出，以便容易知道程序终止在何处。
 
 ```bash
