@@ -482,7 +482,7 @@ nc -w 5 $host $port || {
 注意 `local output=$(foo_command)` 赋值始终会成功（返回 0），若依赖命令返回值，要分开两行写：
 
 ```bash
-    local var
+    local output
 
     output=$(foo_command)  # errexit will capture the return value
 ```
