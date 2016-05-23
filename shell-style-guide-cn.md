@@ -443,29 +443,16 @@ FILE_SUFFIX=$(echo "$PATHNAME | sed -e 's/.*\.//')
 
 ### 选项 errexit
 
-启用了 `set -o errexit` 时小心每条命令的返回值。例如下面语句本意是先检查进程，存活时才执行 killall，但进程不存在时由于启用
-`errexit` 选项的缘故程序将直接退出！
+启用了 `set -o errexit` 时小心每条命令的返回值，它的作用是任何命令返回值 `$?` 非 0 时即让程序将直接退出。但它在下面几种情形时不起作用：
+
+- 命令跟在 while, until, if 关键字之后
+- 命令是 `&&` 或 `||` 语句的一部分
+- `! foo`
+
+应当显示中断执行，例如 `! foo` 该写成：
 
 ```bash
-prog_check $PROG_NAME && killall $PROG_NAME
-...
-```
-
-可改写为断言（assertion）形式，或用 `if..fi` 语句：
-
-```bash
-! prog_check $PROG_NAME || killall $PROG_NAME
-
-# Or:
-if prog_check $PROG_NAME; then
-    killall $PROG_NAME
-fi
-```
-
-特别注意：`! command` 指令在 command 返回 0 时并不会终止当前脚本执行，即使表达式返回非零！应当显示写成：
-
-```bash
-! commmand || return 1
+! foo || return 1
 ```
 
 对于不会输出错误信息的命令，还要显式输出，以便容易知道程序终止在何处。
